@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>DSA Master AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+              display: ['Inter', 'sans-serif'], 
+            },
+            colors: {
+              premium: {
+                bg: '#000000', 
+                glass: 'rgba(255, 255, 255, 0.08)',
+                border: 'rgba(255, 255, 255, 0.12)',
+              }
+            },
+            animation: {
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'shine': 'shine 3s infinite linear',
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              shine: {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' }
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        --card-radius: 28px;
+        
+        /* EASING CURVES - The secret sauce for smooth animations */
+        --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Bouncy */
+        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* Apple-like smooth stop */
+        --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+        
+        /* DARK MODE BASE */
+        --bg-color: #000000;
+        
+        /* Apple-style Glass (Dark) - Refined */
+        --glass-bg: rgba(20, 20, 25, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.08);
+        --glass-highlight: rgba(255, 255, 255, 0.05);
+        --glass-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5);
+        
+        --text-primary: #ffffff;
+        --text-secondary: rgba(235, 235, 245, 0.6);
+
+        /* THEME VARIABLES (Default: Cosmic) */
+        --theme-primary: #6366f1; /* Indigo 500 */
+        --theme-secondary: #a855f7; /* Purple 500 */
+        --theme-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+
+        /* Default Cosmic Theme (Animated) */
+        --bg-gradient: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #020617);
+        --orb-opacity: 0.5;
+        --orb-1-color: rgba(99, 102, 241, 0.4);
+        --orb-2-color: rgba(236, 72, 153, 0.4);
+        --orb-3-color: rgba(59, 130, 246, 0.4);
+      }
+
+      /* PREMIUM ANIMATED THEMES */
+      
+      [data-theme='emerald'] {
+        --theme-primary: #10b981; /* Emerald 500 */
+        --theme-secondary: #14b8a6; /* Teal 500 */
+        --theme-gradient: linear-gradient(135deg, #10b981, #14b8a6);
+
+        --bg-gradient: linear-gradient(-45deg, #022c22, #064e3b, #065f46, #022c22);
+        --orb-1-color: rgba(16, 185, 129, 0.4);
+        --orb-2-color: rgba(52, 211, 153, 0.4);
+        --orb-3-color: rgba(132, 204, 22, 0.3);
+      }
+      
+      [data-theme='sunset'] {
+        --theme-primary: #f43f5e; /* Rose 500 */
+        --theme-secondary: #f97316; /* Orange 500 */
+        --theme-gradient: linear-gradient(135deg, #f43f5e, #f97316);
+
+        --bg-gradient: linear-gradient(-45deg, #450a0a, #7c2d12, #9f1239, #2a0a12);
+        --orb-1-color: rgba(244, 63, 94, 0.4);
+        --orb-2-color: rgba(251, 146, 60, 0.4);
+        --orb-3-color: rgba(168, 85, 247, 0.3);
+      }
+
+      [data-theme='ocean'] {
+        --theme-primary: #0ea5e9; /* Sky 500 */
+        --theme-secondary: #3b82f6; /* Blue 500 */
+        --theme-gradient: linear-gradient(135deg, #0ea5e9, #3b82f6);
+
+        --bg-gradient: linear-gradient(-45deg, #082f49, #0369a1, #0284c7, #0c4a6e);
+        --orb-1-color: rgba(56, 189, 248, 0.4);
+        --orb-2-color: rgba(14, 165, 233, 0.4);
+        --orb-3-color: rgba(99, 102, 241, 0.3);
+      }
+
+      [data-theme='midnight'] {
+        --theme-primary: #94a3b8; /* Slate 400 */
+        --theme-secondary: #64748b; /* Slate 500 */
+        --theme-gradient: linear-gradient(135deg, #94a3b8, #64748b);
+
+        --bg-gradient: linear-gradient(-45deg, #000000, #18181b, #27272a, #09090b);
+        --orb-1-color: rgba(148, 163, 184, 0.2);
+        --orb-2-color: rgba(71, 85, 105, 0.2);
+        --orb-3-color: rgba(255, 255, 255, 0.05);
+      }
+
+      /* RGB CHROMA THEME - PREMIUM REWORK (HOLO-CHROMA) */
+      [data-theme='rgb'] {
+        --theme-primary: #ec4899; /* Pink 500 */
+        --theme-secondary: #8b5cf6; /* Violet 500 */
+        
+        /* Premium Smooth Holo-Chroma Gradient (Pink -> Violet -> Cyan -> Emerald -> Amber -> Pink) */
+        --theme-gradient: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4, #10b981, #facc15, #ec4899);
+
+        /* Ultra Dark Deep Space Background */
+        --bg-gradient: linear-gradient(-45deg, #050505, #080010, #000c0c, #050505);
+        
+        --orb-opacity: 0.4;
+        /* Strategic positioning of RGB lights */
+        --orb-1-color: rgba(236, 72, 153, 0.25); /* Pink Glow */
+        --orb-2-color: rgba(6, 182, 212, 0.25); /* Cyan Glow */
+        --orb-3-color: rgba(139, 92, 246, 0.25); /* Violet Glow */
+      }
+
+      /* LIGHT MODE OVERRIDES */
+      html.light {
+        --bg-color: #f2f2f7;
+        
+        --glass-bg: rgba(255, 255, 255, 0.75);
+        --glass-border: rgba(255, 255, 255, 0.8);
+        --glass-highlight: rgba(255, 255, 255, 0.9);
+        --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+
+        --text-primary: #1d1d1f;
+        --text-secondary: rgba(60, 60, 67, 0.6);
+        
+        --bg-gradient: linear-gradient(-45deg, #f0f9ff, #e0f2fe, #dbeafe, #f0f9ff);
+        --orb-opacity: 0.7;
+      }
+
+      html.light[data-theme='cosmic'] { --bg-gradient: linear-gradient(-45deg, #eff6ff, #f3e8ff, #fae8ff, #eff6ff); }
+      html.light[data-theme='emerald'] { --bg-gradient: linear-gradient(-45deg, #ecfdf5, #d1fae5, #dcfce7, #ecfdf5); }
+      html.light[data-theme='sunset'] { --bg-gradient: linear-gradient(-45deg, #fff1f2, #ffedd5, #fce7f3, #fff1f2); }
+      html.light[data-theme='ocean'] { --bg-gradient: linear-gradient(-45deg, #eff6ff, #e0f2fe, #bae6fd, #eff6ff); }
+      html.light[data-theme='midnight'] { --bg-gradient: linear-gradient(-45deg, #f8fafc, #f1f5f9, #e2e8f0, #f8fafc); }
+      html.light[data-theme='rgb'] { 
+        /* Pastel Chroma for Light Mode */
+        --theme-gradient: linear-gradient(90deg, #f472b6, #a78bfa, #22d3ee, #34d399, #facc15, #f472b6);
+        --bg-gradient: linear-gradient(-45deg, #ffffff, #f9f9f9, #ffffff, #f0fdf4); 
+        --orb-opacity: 0.5;
+      }
+
+      /* SMOOTH GRADIENT ANIMATION */
+      body {
+        background: var(--bg-gradient);
+        background-size: 400% 400%;
+        animation: gradient-flow 60s ease-in-out infinite; /* Slower, smoother background */
+        color: var(--text-primary);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        min-height: 100vh;
+        transition: color 0.5s var(--ease-out-expo);
+      }
+
+      @keyframes gradient-flow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+      
+      /* CONTINUOUS BUTTON GRADIENT FLOW ANIMATION */
+      @keyframes gradient-flow-x {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 100% 50%; }
+      }
+      
+      .animate-gradient-flow {
+        animation: gradient-flow-x 5s linear infinite;
+        background-size: 200% 100%;
+      }
+
+      /* SELECT OPTION STYLING */
+      select option {
+        background-color: #1c1c1e;
+        color: #ffffff;
+        padding: 12px;
+      }
+      html.light select option {
+        background-color: #ffffff;
+        color: #000000;
+      }
+
+      /* ORB ANIMATIONS */
+      .orb-container {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        pointer-events: none;
+        will-change: transform; 
+      }
+
+      .gradient-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px); /* Slightly sharper for performance */
+        opacity: var(--orb-opacity);
+        animation: float 25s infinite ease-in-out alternate;
+        will-change: transform, opacity;
+        transition: background 1s ease;
+        mix-blend-mode: screen; 
+      }
+      html.light .gradient-orb { mix-blend-mode: multiply; filter: blur(100px); }
+
+      .orb-1 { width: 70vmax; height: 70vmax; background: radial-gradient(circle, var(--orb-1-color), transparent 60%); top: -20%; left: -20%; animation-duration: 40s; }
+      .orb-2 { width: 60vmax; height: 60vmax; background: radial-gradient(circle, var(--orb-2-color), transparent 60%); bottom: -20%; right: -20%; animation-duration: 45s; animation-delay: -5s; }
+      .orb-3 { width: 50vmax; height: 50vmax; background: radial-gradient(circle, var(--orb-3-color), transparent 60%); top: 30%; left: 20%; animation-duration: 50s; animation-delay: -10s; }
+
+      @keyframes float {
+        0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+        33% { transform: translate3d(2%, 4%, 0) scale(1.02) rotate(3deg); }
+        66% { transform: translate3d(-2%, 1%, 0) scale(0.98) rotate(-3deg); }
+        100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+      }
+
+      /* APPLE GLASS CARD REFINED */
+      .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: saturate(180%) blur(40px);
+        -webkit-backdrop-filter: saturate(180%) blur(40px);
+        border: 1px solid var(--glass-border);
+        box-shadow: var(--glass-shadow), inset 0 0 0 1px var(--glass-highlight);
+        border-radius: var(--card-radius);
+        position: relative;
+        /* Super smooth transition for interactive cards */
+        transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo), background-color 0.4s ease;
+        will-change: transform, box-shadow;
+      }
+      
+      .glass-card:hover { 
+        transform: translateY(-4px) scale(1.01); 
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+        background: rgba(30, 30, 35, 0.8); 
+        border-color: rgba(255, 255, 255, 0.25);
+        z-index: 5;
+      }
+      html.light .glass-card:hover {
+        background: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+      }
+      .glass-card:active { transform: scale(0.98); transition-duration: 0.1s; }
+
+      /* NEON GLOW EFFECTS */
+      .neon-border-glow {
+        box-shadow: 0 0 20px -5px var(--theme-primary), inset 0 0 15px -5px var(--theme-primary);
+        border-color: var(--theme-primary);
+      }
+      
+      .text-glow {
+        text-shadow: 0 0 20px var(--theme-primary);
+      }
+
+      /* INPUTS */
+      .input-field {
+        width: 100%;
+        background: rgba(120, 120, 128, 0.1);
+        border: 1px solid rgba(255,255,255,0.05);
+        border-radius: 16px;
+        padding: 16px;
+        color: var(--text-primary);
+        font-size: 16px;
+        transition: all 0.3s var(--ease-out-expo);
+      }
+      .input-field:focus {
+        background: rgba(120, 120, 128, 0.2);
+        outline: none;
+        border-color: var(--theme-primary);
+        box-shadow: 0 0 20px -5px var(--theme-primary);
+        transform: scale(1.005);
+      }
+      html.light .input-field {
+        background: rgba(0, 0, 0, 0.03);
+        border-color: rgba(0, 0, 0, 0.08);
+        color: #1d1d1f;
+      }
+      html.light .input-field:focus {
+         background: #fff;
+         border-color: var(--theme-primary);
+         box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+      }
+      .input-field::placeholder { color: var(--text-secondary); }
+
+      /* UTILITIES FOR REACT COMPONENTS */
+      .theme-text { color: var(--theme-primary); transition: color 0.3s ease; }
+      .theme-bg { background-color: var(--theme-primary); transition: background-color 0.3s ease; }
+      .theme-gradient-bg { background: var(--theme-gradient); transition: background 0.3s ease; }
+      
+      /* GLOBAL TEXT HANDLING */
+      * { overflow-wrap: break-word; }
+      
+      /* ANIMATIONS - Refined with Expo Easing */
+      .animate-enter { 
+        animation: fadeInUp 0.8s var(--ease-out-expo) forwards; 
+        opacity: 0; /* Start hidden for animation */
+      }
+      @keyframes fadeInUp { 
+        from { opacity: 0; transform: translateY(30px); filter: blur(10px); } 
+        to { opacity: 1; transform: translateY(0); filter: blur(0); } 
+      }
+      
+      .modal-slide-up { 
+        animation: slideUp 0.6s var(--ease-out-expo) forwards; 
+      }
+      @keyframes slideUp { 
+        from { opacity: 0; transform: translateY(100vh) scale(0.9); filter: blur(5px); } 
+        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+      }
+
+      /* Hover Scale Utility */
+      .hover-scale {
+        transition: transform 0.3s var(--ease-out-expo);
+      }
+      .hover-scale:hover {
+        transform: scale(1.05);
+      }
+      .active-scale:active {
+        transform: scale(0.95);
+      }
+
+      /* GLOBAL UTILITY CLASSES FOR REACT */
+      .ease-expo { transition-timing-function: var(--ease-out-expo) !important; }
+      
+      /* SCROLLBAR */
+      ::-webkit-scrollbar { width: 0px; background: transparent; }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
+    "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "react": "https://aistudiocdn.com/react@^19.2.1",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0"
+  }
+}
+</script>
+</head>
+  <body class="transition-colors duration-1000 ease-in-out">
+    <div id="root"></div>
+  </body>
+</html>

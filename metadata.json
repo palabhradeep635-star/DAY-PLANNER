@@ -1,0 +1,7 @@
+{
+  "name": "DAY PLANNER",
+  "description": "A comprehensive, AI-powered DSA study planner with time tracking, analytics, and calendar integration.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
