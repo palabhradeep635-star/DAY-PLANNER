@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, Clock, Pause, ChevronRight, Activity, Zap, Cloud, Calendar } from 'lucide-react';
+import { Check, Clock, Pause, ChevronRight, Activity, Zap, Cloud, Calendar, ArrowRight } from 'lucide-react';
 import { Task } from '../types';
 import { useApp } from '../context/AppContext';
 
@@ -71,9 +71,11 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
             </div>
             
             {startTime && endTime && task.status !== 'Done' && (
-              <div className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[7px] sm:text-[8px] font-black text-white/40 font-mono tracking-tight uppercase animate-swift-enter">
+              <div className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[7px] sm:text-[8px] font-black text-white/40 font-mono tracking-tight uppercase animate-swift-enter">
                 <Calendar size={8} className="theme-text sm:w-[10px] sm:h-[10px]" />
-                <span className="hidden xs:inline">[{startTime} > {endTime}]</span>
+                <span className="hidden xs:inline flex items-center gap-1">
+                  {startTime} <ArrowRight size={8} className="theme-text" /> {endTime}
+                </span>
                 <span className="xs:hidden">{startTime}</span>
               </div>
             )}
