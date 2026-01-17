@@ -2,35 +2,40 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>DSA Master AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>APEX</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         darkMode: 'class',
         theme: {
           extend: {
-            fontFamily: {
-              sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-              display: ['Inter', 'sans-serif'], 
-            },
-            colors: {
-              premium: {
-                bg: '#000000', 
-                glass: 'rgba(255, 255, 255, 0.08)',
-                border: 'rgba(255, 255, 255, 0.12)',
-              }
+            fontFamily: { 
+              sans: ['Plus Jakarta Sans', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace'],
+              outfit: ['Outfit', 'sans-serif']
             },
             animation: {
-              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-              'shine': 'shine 3s infinite linear',
-              'float': 'float 6s ease-in-out infinite',
+              'spin-slow': 'spin 45s linear infinite',
+              'spin-medium': 'spin 12s linear infinite',
+              'enter': 'enter 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'shimmer': 'shimmer 2.5s infinite linear',
+              'pulse-fast': 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'float': 'float 4s ease-in-out infinite',
             },
             keyframes: {
-              shine: {
+              enter: {
+                '0%': { opacity: '0', transform: 'translateY(12px) scale(0.98)', filter: 'blur(10px)' },
+                '100%': { opacity: '1', transform: 'translateY(0) scale(1)', filter: 'blur(0)' },
+              },
+              shimmer: {
                 '0%': { transform: 'translateX(-100%)' },
                 '100%': { transform: 'translateX(100%)' }
+              },
+              float: {
+                '0%, 100%': { transform: 'translateY(0px)' },
+                '50%': { transform: 'translateY(-8px)' }
               }
             }
           }
@@ -39,328 +44,180 @@
     </script>
     <style>
       :root {
-        --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        --card-radius: 28px;
-        
-        /* EASING CURVES - The secret sauce for smooth animations */
-        --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.1); /* Bouncy */
-        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* Apple-like smooth stop */
-        --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
-        
-        /* DARK MODE BASE */
         --bg-color: #000000;
-        
-        /* Apple-style Glass (Dark) - Refined */
-        --glass-bg: rgba(20, 20, 25, 0.65);
+        --theme-primary: #818cf8;
+        --theme-secondary: #c084fc;
+        --theme-gradient: linear-gradient(135deg, var(--theme-primary), var(--theme-secondary));
+        --theme-primary-glow: rgba(129, 140, 248, 0.5);
+        --glass-bg: rgba(255, 255, 255, 0.02);
         --glass-border: rgba(255, 255, 255, 0.08);
-        --glass-highlight: rgba(255, 255, 255, 0.05);
-        --glass-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.5);
-        
-        --text-primary: #ffffff;
-        --text-secondary: rgba(235, 235, 245, 0.6);
-
-        /* THEME VARIABLES (Default: Cosmic) */
-        --theme-primary: #6366f1; /* Indigo 500 */
-        --theme-secondary: #a855f7; /* Purple 500 */
-        --theme-gradient: linear-gradient(135deg, #6366f1, #a855f7);
-
-        /* Default Cosmic Theme (Animated) */
-        --bg-gradient: linear-gradient(-45deg, #0f172a, #1e1b4b, #312e81, #020617);
-        --orb-opacity: 0.5;
-        --orb-1-color: rgba(99, 102, 241, 0.4);
-        --orb-2-color: rgba(236, 72, 153, 0.4);
-        --orb-3-color: rgba(59, 130, 246, 0.4);
+        --sat: env(safe-area-inset-top, 0px);
+        --sab: env(safe-area-inset-bottom, 0px);
       }
 
-      /* PREMIUM ANIMATED THEMES */
-      
-      [data-theme='emerald'] {
-        --theme-primary: #10b981; /* Emerald 500 */
-        --theme-secondary: #14b8a6; /* Teal 500 */
-        --theme-gradient: linear-gradient(135deg, #10b981, #14b8a6);
+      /* THEME DEFINITIONS */
+      [data-theme="emerald"] { --theme-primary: #10b981; --theme-secondary: #3b82f6; --theme-gradient: linear-gradient(135deg, #10b981, #3b82f6); --theme-primary-glow: rgba(16, 185, 129, 0.5); }
+      [data-theme="sunset"] { --theme-primary: #f97316; --theme-secondary: #ef4444; --theme-gradient: linear-gradient(135deg, #f97316, #ef4444); --theme-primary-glow: rgba(249, 115, 22, 0.5); }
+      [data-theme="ocean"] { --theme-primary: #22d3ee; --theme-secondary: #3b82f6; --theme-gradient: linear-gradient(135deg, #22d3ee, #3b82f6); --theme-primary-glow: rgba(34, 211, 238, 0.5); }
+      [data-theme="rgb"] { --theme-primary: #ec4899; --theme-secondary: #3b82f6; --theme-gradient: linear-gradient(135deg, #ec4899, #8b5cf6, #3b82f6); --theme-primary-glow: rgba(236, 72, 153, 0.5); }
+      [data-theme="midnight"] { --theme-primary: #64748b; --theme-secondary: #1e293b; --theme-gradient: linear-gradient(135deg, #64748b, #1e293b); --theme-primary-glow: rgba(100, 116, 139, 0.5); }
+      [data-theme="cosmic"] { --theme-primary: #818cf8; --theme-secondary: #c084fc; --theme-gradient: linear-gradient(135deg, #818cf8, #c084fc); --theme-primary-glow: rgba(129, 140, 248, 0.5); }
 
-        --bg-gradient: linear-gradient(-45deg, #022c22, #064e3b, #065f46, #022c22);
-        --orb-1-color: rgba(16, 185, 129, 0.4);
-        --orb-2-color: rgba(52, 211, 153, 0.4);
-        --orb-3-color: rgba(132, 204, 22, 0.3);
-      }
-      
-      [data-theme='sunset'] {
-        --theme-primary: #f43f5e; /* Rose 500 */
-        --theme-secondary: #f97316; /* Orange 500 */
-        --theme-gradient: linear-gradient(135deg, #f43f5e, #f97316);
-
-        --bg-gradient: linear-gradient(-45deg, #450a0a, #7c2d12, #9f1239, #2a0a12);
-        --orb-1-color: rgba(244, 63, 94, 0.4);
-        --orb-2-color: rgba(251, 146, 60, 0.4);
-        --orb-3-color: rgba(168, 85, 247, 0.3);
-      }
-
-      [data-theme='ocean'] {
-        --theme-primary: #0ea5e9; /* Sky 500 */
-        --theme-secondary: #3b82f6; /* Blue 500 */
-        --theme-gradient: linear-gradient(135deg, #0ea5e9, #3b82f6);
-
-        --bg-gradient: linear-gradient(-45deg, #082f49, #0369a1, #0284c7, #0c4a6e);
-        --orb-1-color: rgba(56, 189, 248, 0.4);
-        --orb-2-color: rgba(14, 165, 233, 0.4);
-        --orb-3-color: rgba(99, 102, 241, 0.3);
-      }
-
-      [data-theme='midnight'] {
-        --theme-primary: #94a3b8; /* Slate 400 */
-        --theme-secondary: #64748b; /* Slate 500 */
-        --theme-gradient: linear-gradient(135deg, #94a3b8, #64748b);
-
-        --bg-gradient: linear-gradient(-45deg, #000000, #18181b, #27272a, #09090b);
-        --orb-1-color: rgba(148, 163, 184, 0.2);
-        --orb-2-color: rgba(71, 85, 105, 0.2);
-        --orb-3-color: rgba(255, 255, 255, 0.05);
-      }
-
-      /* RGB CHROMA THEME - PREMIUM REWORK (HOLO-CHROMA) */
-      [data-theme='rgb'] {
-        --theme-primary: #ec4899; /* Pink 500 */
-        --theme-secondary: #8b5cf6; /* Violet 500 */
-        
-        /* Premium Smooth Holo-Chroma Gradient (Pink -> Violet -> Cyan -> Emerald -> Amber -> Pink) */
-        --theme-gradient: linear-gradient(90deg, #ec4899, #8b5cf6, #06b6d4, #10b981, #facc15, #ec4899);
-
-        /* Ultra Dark Deep Space Background */
-        --bg-gradient: linear-gradient(-45deg, #050505, #080010, #000c0c, #050505);
-        
-        --orb-opacity: 0.4;
-        /* Strategic positioning of RGB lights */
-        --orb-1-color: rgba(236, 72, 153, 0.25); /* Pink Glow */
-        --orb-2-color: rgba(6, 182, 212, 0.25); /* Cyan Glow */
-        --orb-3-color: rgba(139, 92, 246, 0.25); /* Violet Glow */
-      }
-
-      /* LIGHT MODE OVERRIDES */
-      html.light {
-        --bg-color: #f2f2f7;
-        
-        --glass-bg: rgba(255, 255, 255, 0.75);
-        --glass-border: rgba(255, 255, 255, 0.8);
-        --glass-highlight: rgba(255, 255, 255, 0.9);
-        --glass-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
-
-        --text-primary: #1d1d1f;
-        --text-secondary: rgba(60, 60, 67, 0.6);
-        
-        --bg-gradient: linear-gradient(-45deg, #f0f9ff, #e0f2fe, #dbeafe, #f0f9ff);
-        --orb-opacity: 0.7;
-      }
-
-      html.light[data-theme='cosmic'] { --bg-gradient: linear-gradient(-45deg, #eff6ff, #f3e8ff, #fae8ff, #eff6ff); }
-      html.light[data-theme='emerald'] { --bg-gradient: linear-gradient(-45deg, #ecfdf5, #d1fae5, #dcfce7, #ecfdf5); }
-      html.light[data-theme='sunset'] { --bg-gradient: linear-gradient(-45deg, #fff1f2, #ffedd5, #fce7f3, #fff1f2); }
-      html.light[data-theme='ocean'] { --bg-gradient: linear-gradient(-45deg, #eff6ff, #e0f2fe, #bae6fd, #eff6ff); }
-      html.light[data-theme='midnight'] { --bg-gradient: linear-gradient(-45deg, #f8fafc, #f1f5f9, #e2e8f0, #f8fafc); }
-      html.light[data-theme='rgb'] { 
-        /* Pastel Chroma for Light Mode */
-        --theme-gradient: linear-gradient(90deg, #f472b6, #a78bfa, #22d3ee, #34d399, #facc15, #f472b6);
-        --bg-gradient: linear-gradient(-45deg, #ffffff, #f9f9f9, #ffffff, #f0fdf4); 
-        --orb-opacity: 0.5;
-      }
-
-      /* SMOOTH GRADIENT ANIMATION */
       body {
-        background: var(--bg-gradient);
-        background-size: 400% 400%;
-        animation: gradient-flow 60s ease-in-out infinite; /* Slower, smoother background */
-        color: var(--text-primary);
-        font-family: var(--font-body);
+        background: var(--bg-color);
+        color: #fff;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        margin: 0;
+        overflow: hidden;
         -webkit-font-smoothing: antialiased;
-        min-height: 100vh;
-        transition: color 0.5s var(--ease-out-expo);
+        letter-spacing: -0.03em;
+        user-select: none;
       }
 
-      @keyframes gradient-flow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-      }
-      
-      /* CONTINUOUS BUTTON GRADIENT FLOW ANIMATION */
-      @keyframes gradient-flow-x {
-        0% { background-position: 0% 50%; }
-        100% { background-position: 100% 50%; }
-      }
-      
-      .animate-gradient-flow {
-        animation: gradient-flow-x 5s linear infinite;
-        background-size: 200% 100%;
-      }
-
-      /* SELECT OPTION STYLING */
-      select option {
-        background-color: #1c1c1e;
-        color: #ffffff;
-        padding: 12px;
-      }
-      html.light select option {
-        background-color: #ffffff;
-        color: #000000;
-      }
-
-      /* ORB ANIMATIONS */
-      .orb-container {
+      .mesh-container {
         position: fixed;
         inset: 0;
         z-index: 0;
+        background: #000;
         overflow: hidden;
-        pointer-events: none;
-        will-change: transform; 
       }
 
-      .gradient-orb {
+      .mesh-container::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        opacity: 0.04;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+
+      .blob {
         position: absolute;
         border-radius: 50%;
-        filter: blur(80px); /* Slightly sharper for performance */
-        opacity: var(--orb-opacity);
-        animation: float 25s infinite ease-in-out alternate;
-        will-change: transform, opacity;
-        transition: background 1s ease;
-        mix-blend-mode: screen; 
+        filter: blur(140px);
+        opacity: 0.22;
+        mix-blend-mode: plus-lighter;
+        animation: orbit 40s infinite linear;
       }
-      html.light .gradient-orb { mix-blend-mode: multiply; filter: blur(100px); }
+      .blob-1 { width: 100vw; height: 100vw; background: var(--theme-primary); top: -25%; left: -15%; }
+      .blob-2 { width: 80vw; height: 80vw; background: var(--theme-secondary); bottom: -15%; right: -10%; animation-direction: reverse; }
 
-      .orb-1 { width: 70vmax; height: 70vmax; background: radial-gradient(circle, var(--orb-1-color), transparent 60%); top: -20%; left: -20%; animation-duration: 40s; }
-      .orb-2 { width: 60vmax; height: 60vmax; background: radial-gradient(circle, var(--orb-2-color), transparent 60%); bottom: -20%; right: -20%; animation-duration: 45s; animation-delay: -5s; }
-      .orb-3 { width: 50vmax; height: 50vmax; background: radial-gradient(circle, var(--orb-3-color), transparent 60%); top: 30%; left: 20%; animation-duration: 50s; animation-delay: -10s; }
-
-      @keyframes float {
-        0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
-        33% { transform: translate3d(2%, 4%, 0) scale(1.02) rotate(3deg); }
-        66% { transform: translate3d(-2%, 1%, 0) scale(0.98) rotate(-3deg); }
-        100% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+      @keyframes orbit {
+        from { transform: rotate(0deg) translateX(15%) rotate(0deg); }
+        to { transform: rotate(360deg) translateX(15%) rotate(-360deg); }
       }
 
-      /* APPLE GLASS CARD REFINED */
-      .glass-card {
-        background: var(--glass-bg);
-        backdrop-filter: saturate(180%) blur(40px);
-        -webkit-backdrop-filter: saturate(180%) blur(40px);
-        border: 1px solid var(--glass-border);
-        box-shadow: var(--glass-shadow), inset 0 0 0 1px var(--glass-highlight);
-        border-radius: var(--card-radius);
+      .apple-glass {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(60px) saturate(220%);
+        -webkit-backdrop-filter: blur(60px) saturate(220%);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 32px;
         position: relative;
-        /* Super smooth transition for interactive cards */
-        transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo), background-color 0.4s ease;
-        will-change: transform, box-shadow;
-      }
-      
-      .glass-card:hover { 
-        transform: translateY(-4px) scale(1.01); 
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
-        background: rgba(30, 30, 35, 0.8); 
-        border-color: rgba(255, 255, 255, 0.25);
-        z-index: 5;
-      }
-      html.light .glass-card:hover {
-        background: rgba(255, 255, 255, 0.95);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.8);
-      }
-      .glass-card:active { transform: scale(0.98); transition-duration: 0.1s; }
-
-      /* NEON GLOW EFFECTS */
-      .neon-border-glow {
-        box-shadow: 0 0 20px -5px var(--theme-primary), inset 0 0 15px -5px var(--theme-primary);
-        border-color: var(--theme-primary);
-      }
-      
-      .text-glow {
-        text-shadow: 0 0 20px var(--theme-primary);
+        overflow: hidden;
       }
 
-      /* INPUTS */
-      .input-field {
-        width: 100%;
-        background: rgba(120, 120, 128, 0.1);
-        border: 1px solid rgba(255,255,255,0.05);
-        border-radius: 16px;
-        padding: 16px;
-        color: var(--text-primary);
-        font-size: 16px;
-        transition: all 0.3s var(--ease-out-expo);
-      }
-      .input-field:focus {
-        background: rgba(120, 120, 128, 0.2);
-        outline: none;
-        border-color: var(--theme-primary);
-        box-shadow: 0 0 20px -5px var(--theme-primary);
-        transform: scale(1.005);
-      }
-      html.light .input-field {
-        background: rgba(0, 0, 0, 0.03);
-        border-color: rgba(0, 0, 0, 0.08);
-        color: #1d1d1f;
-      }
-      html.light .input-field:focus {
-         background: #fff;
-         border-color: var(--theme-primary);
-         box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
-      }
-      .input-field::placeholder { color: var(--text-secondary); }
-
-      /* UTILITIES FOR REACT COMPONENTS */
-      .theme-text { color: var(--theme-primary); transition: color 0.3s ease; }
-      .theme-bg { background-color: var(--theme-primary); transition: background-color 0.3s ease; }
-      .theme-gradient-bg { background: var(--theme-gradient); transition: background 0.3s ease; }
-      
-      /* GLOBAL TEXT HANDLING */
-      * { overflow-wrap: break-word; }
-      
-      /* ANIMATIONS - Refined with Expo Easing */
-      .animate-enter { 
-        animation: fadeInUp 0.8s var(--ease-out-expo) forwards; 
-        opacity: 0; /* Start hidden for animation */
-      }
-      @keyframes fadeInUp { 
-        from { opacity: 0; transform: translateY(30px); filter: blur(10px); } 
-        to { opacity: 1; transform: translateY(0); filter: blur(0); } 
-      }
-      
-      .modal-slide-up { 
-        animation: slideUp 0.6s var(--ease-out-expo) forwards; 
-      }
-      @keyframes slideUp { 
-        from { opacity: 0; transform: translateY(100vh) scale(0.9); filter: blur(5px); } 
-        to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+      .nav-island {
+        background: rgba(10, 10, 10, 0.4);
+        backdrop-filter: blur(50px) saturate(250%);
+        -webkit-backdrop-filter: blur(50px) saturate(250%);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 40px;
+        box-shadow: 0 40px 100px rgba(0,0,0,0.8), inset 0 0 0 1px rgba(255,255,255,0.02);
       }
 
-      /* Hover Scale Utility */
-      .hover-scale {
-        transition: transform 0.3s var(--ease-out-expo);
-      }
-      .hover-scale:hover {
-        transform: scale(1.05);
-      }
-      .active-scale:active {
-        transform: scale(0.95);
+      .plasma-indicator {
+        position: absolute;
+        background: var(--theme-gradient);
+        filter: blur(14px);
+        opacity: 0.12;
+        border-radius: 20px;
+        transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 0;
       }
 
-      /* GLOBAL UTILITY CLASSES FOR REACT */
-      .ease-expo { transition-timing-function: var(--ease-out-expo) !important; }
+      /* ENHANCED CREATE BUTTON ANIMATIONS */
+      .ignite-outer-ring {
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        border-top-color: var(--theme-primary);
+        border-bottom-color: var(--theme-secondary);
+        animation: spin 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        opacity: 0.6;
+        filter: drop-shadow(0 0 8px var(--theme-primary-glow));
+      }
+
+      .ignite-inner-ring {
+        position: absolute;
+        inset: -12px;
+        border-radius: 50%;
+        border: 1px dashed rgba(255, 255, 255, 0.15);
+        animation: spin 8s linear infinite reverse;
+      }
+
+      .ignite-pulse-glow {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: var(--theme-gradient);
+        filter: blur(20px);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .group:hover .ignite-pulse-glow {
+        opacity: 0.4;
+        animation: forge-pulse 1.5s ease-in-out infinite;
+      }
+
+      .group:hover .ignite-outer-ring {
+        animation-duration: 1s;
+        inset: -8px;
+        opacity: 1;
+      }
+
+      @keyframes forge-pulse {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.3); opacity: 0.6; }
+      }
+
+      .theme-text {
+        background: var(--theme-gradient);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
       
-      /* SCROLLBAR */
-      ::-webkit-scrollbar { width: 0px; background: transparent; }
+      .theme-gradient-bg { background: var(--theme-gradient); }
+
+      .fluid-h1 { 
+        font-size: clamp(1.8rem, 6vw, 3.8rem); 
+        font-weight: 800; 
+        line-height: 0.85; 
+        letter-spacing: -0.06em; 
+        text-transform: uppercase;
+        font-style: italic;
+      }
+      
+      ::-webkit-scrollbar { display: none; }
     </style>
   <script type="importmap">
 {
   "imports": {
-    "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
-    "react/": "https://aistudiocdn.com/react@^19.2.1/",
-    "react": "https://aistudiocdn.com/react@^19.2.1",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.556.0",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.32.0"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
   }
 }
 </script>
 </head>
-  <body class="transition-colors duration-1000 ease-in-out">
+  <body>
     <div id="root"></div>
   </body>
 </html>

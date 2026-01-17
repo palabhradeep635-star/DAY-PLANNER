@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Sparkles, Plus, Keyboard } from 'lucide-react';
+import { X, Sparkles, Rocket, Cpu } from 'lucide-react';
 
 interface CreationChoiceModalProps {
   onClose: () => void;
@@ -9,41 +9,44 @@ interface CreationChoiceModalProps {
 
 export const CreationChoiceModal: React.FC<CreationChoiceModalProps> = ({ onClose, onManual, onAI }) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4" onClick={onClose}>
-      <div className="absolute inset-0 bg-black/50 backdrop-blur-md transition-opacity" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-8 animate-enter" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/85 backdrop-blur-3xl transition-opacity" />
       <div 
-        className="glass-card w-full max-w-sm modal-slide-up relative z-10 !p-8 flex flex-col items-center text-center"
+        className="ignition-card w-full max-w-sm relative z-10 !p-12 flex flex-col items-center text-center gap-10 border-white/20 shadow-[0_0_100px_rgba(0,0,0,1)]"
         onClick={(e) => e.stopPropagation()}
-        style={{ background: 'var(--glass-bg)', backdropFilter: 'blur(50px)' }}
       >
         <button 
           onClick={onClose} 
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center transition-colors"
+          className="absolute top-6 right-6 w-12 h-12 rounded-[24px] bg-white/5 hover:bg-white/10 flex items-center justify-center transition-all hover:rotate-90"
         >
-          <X size={18} className="text-gray-500 dark:text-gray-400" />
+          <X size={22} className="text-white/40" />
         </button>
 
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Create Task</h2>
-        <p className="text-gray-500 dark:text-gray-400 text-sm mb-8">How would you like to add a new task?</p>
+        <div className="flex flex-col items-center gap-4">
+           <div className="w-20 h-20 rounded-[32px] theme-gradient-bg flex items-center justify-center shadow-[0_0_40px_var(--theme-primary-glow)]">
+              <Rocket size={40} className="text-white animate-bounce" />
+           </div>
+           <h2 className="text-4xl font-black text-white tracking-tighter italic uppercase">Forge_Entry</h2>
+           <p className="text-[11px] text-white/30 font-black uppercase tracking-[0.4em] italic font-mono px-4">Initialize protocol for new directive</p>
+        </div>
 
-        <div className="grid gap-4 w-full">
+        <div className="grid gap-6 w-full">
           <button 
             onClick={onAI}
-            className="group relative w-full p-4 rounded-2xl theme-gradient-bg text-white shadow-lg hover:scale-[1.02] transition-all overflow-hidden"
+            className="group relative w-full py-6 rounded-[32px] theme-gradient-bg text-white shadow-2xl hover:scale-[1.05] active:scale-[0.95] transition-all overflow-hidden"
           >
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-            <div className="relative flex items-center justify-center gap-3">
-              <Sparkles className="w-5 h-5 animate-pulse" />
-              <span className="font-bold">Generate with AI</span>
+            <div className="relative flex items-center justify-center gap-4">
+              <Sparkles className="w-7 h-7 animate-pulse" />
+              <span className="font-black text-xl italic uppercase tracking-widest">Neural AI</span>
             </div>
           </button>
 
           <button 
             onClick={onManual}
-            className="group w-full p-4 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-all flex items-center justify-center gap-3"
+            className="group w-full py-6 rounded-[32px] bg-white/5 border border-white/15 text-white hover:bg-white/10 hover:border-white/30 hover:scale-[1.05] active:scale-[0.95] transition-all flex items-center justify-center gap-4"
           >
-            <Keyboard className="w-5 h-5 text-gray-500 dark:text-gray-400 group-hover:text-[var(--theme-primary)] transition-colors" />
-            <span className="font-semibold">Manual Entry</span>
+            <Cpu className="w-7 h-7 text-white/40 group-hover:theme-text transition-colors" />
+            <span className="font-black text-xl italic uppercase tracking-widest">Forge Manual</span>
           </button>
         </div>
       </div>

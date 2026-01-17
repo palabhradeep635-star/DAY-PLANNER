@@ -1,6 +1,6 @@
 {
-  "name": "DAY PLANNER",
-  "description": "A comprehensive, AI-powered DSA study planner with time tracking, analytics, and calendar integration.",
+  "name": "APEX IGNITION",
+  "description": "High-performance AI-powered DSA study tracker and task orchestrator.",
   "requestFramePermissions": [
     "microphone"
   ]

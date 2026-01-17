@@ -2,38 +2,42 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip as RechartsTooltip } from 'recharts';
 import { useApp } from '../context/AppContext';
 import { PHASES } from '../types';
-import { GlassCard } from '../components/ui/GlassCard';
+
+const THEME_COLORS = {
+  iris: '#818cf8',
+  violet: '#c084fc',
+  muted: 'rgba(255, 255, 255, 0.04)',
+  label: 'rgba(255, 255, 255, 0.3)'
+};
 
 export const AnalyticsScreen: React.FC = () => {
   const { tasks } = useApp();
   
-  // Calculate stats
-  const total = tasks.length || 1; // Avoid divide by zero
+  const total = tasks.length || 1;
   const doneCount = tasks.filter(t => t.status === 'Done').length;
   const inProgressCount = tasks.filter(t => t.status === 'In progress').length;
   const todoCount = tasks.filter(t => t.status === 'Not started').length;
 
   const statusData = [
-    { name: 'Completed', value: doneCount, color: 'var(--theme-primary)' }, 
-    { name: 'In Progress', value: inProgressCount, color: '#fbbf24' }, // Amber
-    { name: 'To Do', value: todoCount, color: '#64748b' }, // Slate
-  ].filter(d => d.value > 0);
+    { name: 'Synced', value: doneCount, color: THEME_COLORS.iris }, 
+    { name: 'Active', value: inProgressCount, color: THEME_COLORS.violet }, 
+    { name: 'Pending', value: todoCount, color: THEME_COLORS.muted },
+  ].filter(d => d.value > 0 || d.name === 'Pending');
 
   const timeData = Object.keys(PHASES).map(phaseKey => {
     const phaseTasks = tasks.filter(t => t.phase === phaseKey);
     return {
       name: phaseKey,
-      actual: Math.round(phaseTasks.reduce((acc, t) => acc + (t.actualMinutes || 0), 0) / 60 * 10) / 10
+      minutes: phaseTasks.reduce((acc, t) => acc + (t.actualMinutes || 0), 0)
     };
   });
 
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
-      const data = payload[0];
       return (
-        <div className="bg-black/80 backdrop-blur-md border border-white/10 p-2 rounded-lg shadow-xl text-xs text-white">
-          <p className="font-semibold">{data.name}</p>
-          <p>{data.value} tasks ({Math.round((data.value / total) * 100)}%)</p>
+        <div className="bg-black/90 backdrop-blur-2xl border border-white/10 p-3 rounded-2xl shadow-2xl text-[10px] text-white font-mono">
+          <p className="font-black opacity-40 mb-1 tracking-widest uppercase">{payload[0].name}</p>
+          <p className="font-bold text-xs">{payload[0].value} Items</p>
         </div>
       );
     }
@@ -41,15 +45,19 @@ export const AnalyticsScreen: React.FC = () => {
   };
 
   return (
-    <div className="animate-enter pb-32">
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight mb-8 pt-2">Analytics</h1>
-      
-      <div className="grid grid-cols-1 gap-6 mb-6">
-        <GlassCard className="!p-6">
-          <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white flex items-center gap-2">
-            Task Distribution
-            <span className="text-xs font-normal text-gray-500 bg-gray-100 dark:bg-white/10 px-2 py-1 rounded-full">{total} total</span>
-          </h3>
+    <div className="animate-enter pb-32 pt-4">
+      <div className="space-y-6">
+        <div className="apple-glass p-8 border-white/5">
+          <div className="flex justify-between items-start mb-8">
+            <div>
+              <div className="text-[10px] font-black text-white/30 uppercase tracking-widest font-mono mb-1">Insights</div>
+              <h3 className="text-xl font-bold italic text-white uppercase tracking-tighter">Status Metric</h3>
+            </div>
+            <div className="text-right">
+              <span className="text-4xl font-black italic">{total}</span>
+              <div className="text-[8px] opacity-20 font-mono tracking-widest">LOGS</div>
+            </div>
+          </div>
           
           <div className="h-[220px] relative">
             <ResponsiveContainer width="100%" height="100%">
@@ -58,12 +66,11 @@ export const AnalyticsScreen: React.FC = () => {
                   data={statusData} 
                   cx="50%" 
                   cy="50%" 
-                  innerRadius={65} 
-                  outerRadius={85} 
-                  paddingAngle={6} 
+                  innerRadius={70} 
+                  outerRadius={95} 
+                  paddingAngle={12} 
                   dataKey="value"
                   stroke="none"
-                  cornerRadius={6}
                 >
                   {statusData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
                 </Pie>
@@ -71,62 +78,53 @@ export const AnalyticsScreen: React.FC = () => {
               </PieChart>
             </ResponsiveContainer>
             
-            {/* Center Text */}
             <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-              <span className="text-3xl font-bold text-gray-900 dark:text-white">{Math.round((doneCount / total) * 100)}%</span>
-              <span className="text-xs text-gray-500 uppercase tracking-widest font-semibold">Done</span>
+              <span className="text-3xl font-black text-white italic">{Math.round((doneCount / total) * 100)}%</span>
+              <span className="text-[8px] text-white/20 uppercase tracking-widest font-mono">Completion</span>
             </div>
           </div>
 
-          <div className="flex justify-center gap-6 mt-6">
+          <div className="flex justify-between px-4 mt-8">
             {statusData.map(d => (
-              <div key={d.name} className="flex flex-col items-center gap-1">
-                <div className="flex items-center gap-2 text-xs font-medium text-gray-500 dark:text-gray-400">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: d.color }} />
+              <div key={d.name} className="flex flex-col items-center">
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase text-white/20 mb-1">
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.name}
                 </div>
-                <div className="text-sm font-bold text-gray-900 dark:text-white">
-                  {Math.round((d.value / total) * 100)}%
-                </div>
+                <div className="text-sm font-bold text-white italic">{d.value}</div>
               </div>
             ))}
           </div>
-        </GlassCard>
+        </div>
 
-        <GlassCard className="!p-6">
-          <h3 className="text-lg font-bold mb-6 text-gray-900 dark:text-white">Study Hours</h3>
-          <div className="h-[200px]">
+        <div className="apple-glass p-8 border-white/5">
+          <div className="text-[10px] font-black text-white/30 uppercase tracking-widest font-mono mb-6">Load Distribution</div>
+          <div className="h-[180px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={timeData} barSize={32}>
                 <XAxis 
                   dataKey="name" 
-                  stroke="#94a3b8" 
-                  fontSize={11} 
-                  tickLine={false} 
-                  axisLine={false} 
-                  tickMargin={10}
+                  stroke="none" 
+                  fontSize={10} 
+                  tickMargin={12}
+                  fontFamily="JetBrains Mono"
+                  tick={{ fill: THEME_COLORS.label }}
                 />
                 <YAxis hide />
-                <RechartsTooltip 
-                  cursor={{ fill: 'rgba(255,255,255,0.05)' }}
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(0,0,0,0.8)', 
-                    border: '1px solid rgba(255,255,255,0.1)', 
-                    borderRadius: '8px',
-                    color: '#fff',
-                    fontSize: '12px'
-                  }}
-                />
+                <RechartsTooltip cursor={{ fill: 'rgba(255,255,255,0.02)' }} content={<CustomTooltip />} />
                 <Bar 
-                  dataKey="actual" 
-                  fill="var(--theme-primary)" 
-                  radius={[6, 6, 6, 6]}
-                  animationDuration={1500}
+                  dataKey="minutes" 
+                  fill={THEME_COLORS.iris} 
+                  radius={[8, 8, 8, 8]}
+                  className="transition-all duration-500"
                 />
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </GlassCard>
+          <div className="mt-4 text-center">
+             <span className="text-[9px] font-black uppercase tracking-widest text-white/10 italic">Performance per Module Chapter</span>
+          </div>
+        </div>
       </div>
     </div>
   );

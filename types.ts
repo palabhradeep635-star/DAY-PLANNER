@@ -1,16 +1,23 @@
-
-export type Phase = 'P1' | 'P2' | 'P3' | 'P4';
+export type Phase = string;
 export type Priority = 'High' | 'Medium' | 'Low';
 export type Status = 'Not started' | 'In progress' | 'Done';
 export type TaskType = 'Lecture' | 'Practice' | 'Revision' | 'Notes' | 'Misc';
 export type AIProvider = 'gemini' | 'chatgpt';
-export type GradientTheme = 'cosmic' | 'emerald' | 'sunset' | 'ocean' | 'midnight' | 'rgb';
+export type GradientTheme = 'cosmic' | 'emerald' | 'sunset' | 'ocean' | 'midnight' | 'rgb' | 'toxic' | 'nebula' | 'monolith';
+
+export interface TaskSyncMetadata {
+  googleCalendarId?: string;
+  notionPageId?: string;
+  microsoftTaskId?: string;
+  lastSyncedAt?: number;
+}
 
 export interface Task {
   id: string;
   phase: Phase;
-  day: string; // e.g., "D1"
-  code: string; // e.g., "P1D1"
+  topic?: string;
+  day: string;
+  code: string;
   title: string;
   details: string;
   type: TaskType;
@@ -22,12 +29,14 @@ export interface Task {
   lastEdited: number;
   timerRunning?: boolean;
   timerStartTime?: number;
+  syncMetadata?: TaskSyncMetadata;
 }
 
 export interface Integrations {
   googleCalendar: boolean;
   notion: boolean;
   googleAccount: boolean;
+  microsoftTasks: boolean;
 }
 
 export interface UserSettings {
@@ -38,7 +47,7 @@ export interface UserSettings {
   dailyGoal: number; 
   onboardingCompleted: boolean;
   aiProvider: AIProvider;
-  lastAiPrompt: string; // Persist the last used prompt
+  lastAiPrompt: string; 
   integrations: Integrations;
 }
 
@@ -48,7 +57,7 @@ export interface UserProfile {
   avatar?: string;
 }
 
-export const PHASES: Record<Phase, string> = {
+export const PHASES: Record<string, string> = {
   P1: 'Arrays & Basics',
   P2: 'Strings & Sorting',
   P3: 'Recursion & Backtracking',
