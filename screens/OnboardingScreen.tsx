@@ -10,45 +10,50 @@ export const OnboardingScreen: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-white dark:bg-slate-900 z-50 flex flex-col items-center justify-center p-6 text-center">
-      <div className="max-w-md w-full">
-        <div className="w-20 h-20 bg-blue-500 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-xl shadow-blue-500/30 animate-float">
+    <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center p-6 text-center overflow-hidden">
+      <div className="mesh-container">
+        <div className="blob blob-1 opacity-40" />
+        <div className="blob blob-2 opacity-40" />
+      </div>
+      
+      <div className="max-w-md w-full relative z-10">
+        <div className="w-20 h-20 theme-gradient-bg rounded-3xl flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-[var(--theme-primary-glow)] animate-float border border-white/20">
           <Target className="w-10 h-10 text-white" />
         </div>
         
-        <h1 className="text-4xl font-display font-bold text-gray-900 dark:text-white mb-4">
-          Master DSA
+        <h1 className="text-5xl font-black text-white mb-4 italic uppercase tracking-tighter">
+          APEX IGNITION
         </h1>
-        <p className="text-gray-500 dark:text-gray-400 mb-10 text-lg leading-relaxed">
-          Your AI-powered companion to crush technical interviews. Track progress, time your code, and generate personalized study plans.
+        <p className="text-white/40 mb-12 text-sm leading-relaxed font-medium italic">
+          High-performance neural task orchestration. Forge directives, track execution velocity, and synchronize with AI-powered study vectors.
         </p>
 
-        <div className="grid gap-6 mb-10 text-left">
-           <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center flex-shrink-0">
-                <Zap className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+        <div className="grid gap-6 mb-12 text-left">
+           <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <div className="w-10 h-10 rounded-xl theme-gradient-bg flex items-center justify-center flex-shrink-0 shadow-lg">
+                <Zap className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white">AI Generated Plans</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Custom daily tasks based on your pace.</p>
+                <h3 className="font-bold text-white uppercase text-xs tracking-widest italic">Neural Directives</h3>
+                <p className="text-[11px] text-white/30 mt-1">Autonomous study plans calibrated to your cognitive flow.</p>
               </div>
            </div>
-           <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                <Shield className="w-5 h-5 text-green-600 dark:text-green-400" />
+           <div className="flex gap-4 p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                <Shield className="w-5 h-5 text-white/40" />
               </div>
               <div>
-                <h3 className="font-bold text-gray-900 dark:text-white">Privacy First</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Your data stays local on your device.</p>
+                <h3 className="font-bold text-white uppercase text-xs tracking-widest italic">Local Persistence</h3>
+                <p className="text-[11px] text-white/30 mt-1">Encryption-grade local storage ensures directive security.</p>
               </div>
            </div>
         </div>
 
         <button 
           onClick={handleStart}
-          className="w-full py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-2xl shadow-xl shadow-blue-600/20 transition-all scale-tap"
+          className="w-full py-5 theme-gradient-bg text-white font-black rounded-2xl shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all uppercase italic tracking-[0.2em] text-sm border border-white/10"
         >
-          Get Started
+          Initialize Sync
         </button>
       </div>
     </div>

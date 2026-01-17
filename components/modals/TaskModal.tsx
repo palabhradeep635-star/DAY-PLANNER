@@ -60,10 +60,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4" onClick={onClose}>
+    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 animate-swift-enter" onClick={onClose}>
       <div className="absolute inset-0 bg-black/85 backdrop-blur-xl" />
       <div 
-        className="apple-glass w-full max-w-lg relative z-10 p-0 overflow-hidden !rounded-[40px] shadow-4xl flex flex-col max-h-[85vh] border border-white/20" 
+        className="apple-glass w-full max-w-lg relative z-10 p-0 overflow-hidden !rounded-[40px] shadow-4xl flex flex-col max-h-[85vh] border border-white/20 animate-swift-zoom" 
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center p-6 border-b border-white/5">
@@ -74,30 +74,30 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
             <button 
               onClick={handleOptimize}
               disabled={optimizing || !formData.title}
-              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--theme-primary)]/10 text-[var(--theme-primary)] border border-[var(--theme-primary)]/20 text-[10px] font-black uppercase tracking-widest disabled:opacity-30 transition-all hover:bg-[var(--theme-primary)]/20"
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--theme-primary)]/10 text-[var(--theme-primary)] border border-[var(--theme-primary)]/20 text-[10px] font-black uppercase tracking-widest disabled:opacity-30 transition-all swift-hover active:scale-95"
             >
               {optimizing ? <Loader2 size={14} className="animate-spin" /> : <Sparkles size={14} />}
               Neural Enhance
             </button>
-            <button onClick={onClose} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/30 hover:text-white transition-colors">
+            <button onClick={onClose} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/30 hover:text-white transition-colors swift-press">
               <X size={22} />
             </button>
           </div>
         </div>
 
         <div className="p-8 space-y-6 overflow-y-auto flex-1 no-scrollbar">
-          <div>
+          <div className="animate-swift-enter" style={{ animationDelay: '0.1s' }}>
             <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-2 block ml-1 font-mono italic">Directive_Identification</label>
             <input 
               type="text" 
               value={formData.title} 
               onChange={(e) => setFormData({...formData, title: e.target.value})} 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white text-base font-bold italic focus:border-white/30 transition-all outline-none placeholder:text-white/10" 
+              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white text-base font-bold italic focus:border-white/30 transition-all outline-none placeholder:text-white/10 swift-transition" 
               placeholder="e.g. Optimize Dijkstra's Priority Queue" 
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 animate-swift-enter" style={{ animationDelay: '0.15s' }}>
              <div>
                 <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-2 block ml-1 font-mono italic">Sector_Topic</label>
                 <div className="relative">
@@ -106,7 +106,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
                     type="text" 
                     value={formData.topic} 
                     onChange={(e) => setFormData({...formData, topic: e.target.value})} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-white text-xs font-bold italic outline-none focus:border-white/30 transition-all" 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-white text-xs font-bold italic outline-none focus:border-white/30 transition-all swift-transition" 
                     placeholder="Sector..." 
                    />
                 </div>
@@ -119,7 +119,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
                     type="text" 
                     value={formData.day} 
                     onChange={(e) => setFormData({...formData, day: e.target.value})} 
-                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-white text-xs font-bold italic outline-none focus:border-white/30 transition-all" 
+                    className="w-full bg-white/5 border border-white/10 rounded-2xl pl-10 pr-4 py-3.5 text-white text-xs font-bold italic outline-none focus:border-white/30 transition-all swift-transition" 
                     placeholder="e.g. D2" 
                    />
                 </div>
@@ -128,9 +128,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
 
           <div 
             onClick={() => setFormData(prev => ({ ...prev, isToday: !prev.isToday }))}
-            className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex items-center justify-between group ${
+            className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex items-center justify-between group animate-swift-enter ${
               formData.isToday ? 'border-[var(--theme-primary)]/30 bg-[var(--theme-primary)]/5' : 'border-white/5 bg-white/5'
             }`}
+            style={{ animationDelay: '0.2s' }}
           >
              <div className="flex items-center gap-3">
                 <Calendar size={16} className={formData.isToday ? 'theme-text' : 'text-white/20'} />
@@ -141,13 +142,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
              </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-4 animate-swift-enter" style={{ animationDelay: '0.25s' }}>
              <div>
                 <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-2 block ml-1 font-mono italic">Status_State</label>
                 <select 
                    value={formData.status} 
                    onChange={(e) => setFormData({...formData, status: e.target.value as any})}
-                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white text-xs font-bold italic outline-none appearance-none"
+                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white text-xs font-bold italic outline-none appearance-none swift-transition"
                 >
                    {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
@@ -157,29 +158,29 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, onClose }) => {
                 <select 
                    value={formData.type} 
                    onChange={(e) => setFormData({...formData, type: e.target.value as any})}
-                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white text-xs font-bold italic outline-none appearance-none"
+                   className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white text-xs font-bold italic outline-none appearance-none swift-transition"
                 >
                    {TASK_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
              </div>
           </div>
 
-          <div>
+          <div className="animate-swift-enter" style={{ animationDelay: '0.3s' }}>
             <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.4em] mb-2 block ml-1 font-mono italic">Logic_Log_Details</label>
             <textarea 
               value={formData.details} 
               onChange={(e) => setFormData({...formData, details: e.target.value})} 
-              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm font-medium italic min-h-[120px] outline-none focus:border-white/30 placeholder:text-white/10" 
+              className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-white text-sm font-medium italic min-h-[120px] outline-none focus:border-white/30 placeholder:text-white/10 swift-transition" 
               placeholder="Patterns, complexities, or logic branches..." 
             />
           </div>
         </div>
 
-        <div className="p-8 border-t border-white/5 flex gap-4">
+        <div className="p-8 border-t border-white/5 flex gap-4 animate-swift-enter" style={{ animationDelay: '0.35s' }}>
           {task && (
             <button 
               onClick={() => { if(confirm('Erase directive from archives?')) { deleteTask(task.id); onClose(); } }} 
-              className="w-14 h-14 flex items-center justify-center rounded-2xl bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all border border-red-500/20"
+              className="w-14 h-14 flex items-center justify-center rounded-2xl bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-all border border-red-500/20 swift-hover active:scale-90"
             >
               <Trash2 size={20} />
             </button>

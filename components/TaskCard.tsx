@@ -42,36 +42,36 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
   return (
     <div 
       onClick={() => onEdit(task)}
-      className={`apple-glass p-4 sm:p-6 group relative active:scale-[0.99] cursor-pointer border-white/5 shadow-lg transition-all hover:bg-white/[0.05] ${
+      className={`apple-glass p-4 sm:p-6 group relative swift-hover swift-press cursor-pointer border-white/5 shadow-lg transition-all ${
         task.status === 'Done' ? 'opacity-30 grayscale-[0.8]' : ''
       }`}
     >
       {task.status === 'In progress' && (
-        <div className="absolute left-0 top-0 bottom-0 w-1 theme-gradient-bg shadow-[2px_0_15px_var(--theme-primary)]" />
+        <div className="absolute left-0 top-0 bottom-0 w-1 theme-gradient-bg shadow-[2px_0_15px_var(--theme-primary)] animate-pulse" />
       )}
 
       <div className="flex items-center gap-3 sm:gap-6 relative z-10">
         <button
           onClick={toggleStatus}
-          className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-[18px] border flex items-center justify-center transition-all duration-500 flex-shrink-0 relative ${
-            task.status === 'Done' ? 'theme-gradient-bg border-transparent' : 
-            task.status === 'In progress' ? 'border-[var(--theme-primary)] bg-[var(--theme-primary)]/10 shadow-[0_0_15px_var(--theme-primary-glow)]' : 'border-white/10 bg-white/5'
+          className={`w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-[18px] border flex items-center justify-center transition-all duration-700 flex-shrink-0 relative swift-press ${
+            task.status === 'Done' ? 'theme-gradient-bg border-transparent scale-100 shadow-xl' : 
+            task.status === 'In progress' ? 'border-[var(--theme-primary)] bg-[var(--theme-primary)]/10 shadow-[0_0_15px_var(--theme-primary-glow)] scale-105' : 'border-white/10 bg-white/5 hover:border-white/20'
           }`}
         >
-          {task.status === 'Done' && <Check size={20} className="text-white stroke-[3px] sm:w-[22px] sm:h-[22px]" />}
+          {task.status === 'Done' && <Check size={20} className="text-white stroke-[3px] sm:w-[22px] sm:h-[22px] animate-swift-zoom" />}
           {task.status === 'In progress' && <Activity size={20} className="text-white animate-pulse sm:w-[22px] sm:h-[22px]" />}
-          {task.status === 'Not started' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors" />}
+          {task.status === 'Not started' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors duration-500" />}
         </button>
 
         <div className="flex-1 min-w-0">
           <div className="flex items-center flex-wrap gap-1.5 sm:gap-2.5 mb-1.5 sm:mb-2">
             <span className="text-[8px] sm:text-[9px] font-black text-white/30 font-mono tracking-widest uppercase truncate">{task.code}</span>
-            <div className={`px-1.5 sm:px-2 py-0.5 rounded-lg border text-[7px] sm:text-[8px] font-black uppercase tracking-widest ${getPriorityStyles(task.priority)}`}>
+            <div className={`px-1.5 sm:px-2 py-0.5 rounded-lg border text-[7px] sm:text-[8px] font-black uppercase tracking-widest transition-colors duration-700 ${getPriorityStyles(task.priority)}`}>
                {task.priority}
             </div>
             
             {startTime && endTime && task.status !== 'Done' && (
-              <div className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[7px] sm:text-[8px] font-black text-white/40 font-mono tracking-tight uppercase">
+              <div className="flex items-center gap-1.5 sm:gap-2 px-1.5 sm:px-2.5 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[7px] sm:text-[8px] font-black text-white/40 font-mono tracking-tight uppercase animate-swift-enter">
                 <Calendar size={8} className="theme-text sm:w-[10px] sm:h-[10px]" />
                 <span className="hidden xs:inline">[{startTime} > {endTime}]</span>
                 <span className="xs:hidden">{startTime}</span>
@@ -79,7 +79,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
             )}
 
             {isSynced && (
-              <div className="flex items-center gap-1 ml-1 opacity-40">
+              <div className="flex items-center gap-1 ml-1 opacity-40 animate-swift-zoom">
                 <Cloud size={9} className="theme-text sm:w-[10px] sm:h-[10px]" />
                 <span className="text-[6px] sm:text-[7px] font-black text-white/60 uppercase font-mono italic">SYNC</span>
               </div>
@@ -92,8 +92,8 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
             )}
           </div>
 
-          <h3 className={`font-black text-base sm:text-xl leading-tight transition-all mb-1.5 sm:mb-2.5 italic truncate tracking-tight ${
-            task.status === 'Done' ? 'line-through text-white/20' : 'text-white'
+          <h3 className={`font-black text-base sm:text-xl leading-tight transition-all duration-700 mb-1.5 sm:mb-2.5 italic truncate tracking-tight ${
+            task.status === 'Done' ? 'line-through text-white/20 translate-x-1' : 'text-white translate-x-0'
           }`}>
             {task.title}
           </h3>
@@ -107,13 +107,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
 
         <button 
           onClick={handleTimer}
-          className={`w-9 h-9 sm:w-13 sm:h-13 rounded-xl sm:rounded-[18px] flex items-center justify-center transition-all border shrink-0 ${
+          className={`w-9 h-9 sm:w-13 sm:h-13 rounded-xl sm:rounded-[18px] flex items-center justify-center transition-all duration-700 border shrink-0 swift-press ${
             task.timerRunning 
-              ? 'bg-[var(--theme-primary)] text-white border-transparent shadow-[0_0_20px_var(--theme-primary-glow)]' 
+              ? 'bg-[var(--theme-primary)] text-white border-transparent shadow-[0_0_20px_var(--theme-primary-glow)] scale-110' 
               : 'bg-white/5 text-white/10 hover:text-white/40 border-white/5 hover:border-white/10'
           }`}
         >
-          {task.timerRunning ? <Pause size={16} fill="currentColor" className="sm:w-[18px] sm:h-[18px]" /> : <ChevronRight size={18} className="group-hover:translate-x-1 transition-all sm:w-[20px] sm:h-[20px]" />}
+          {task.timerRunning ? <Pause size={16} fill="currentColor" className="sm:w-[18px] sm:h-[18px] animate-swift-zoom" /> : <ChevronRight size={18} className="group-hover:translate-x-1.5 transition-all duration-500 sm:w-[20px] sm:h-[20px]" />}
         </button>
       </div>
     </div>

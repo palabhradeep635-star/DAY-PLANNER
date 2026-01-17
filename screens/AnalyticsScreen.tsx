@@ -35,7 +35,7 @@ export const AnalyticsScreen: React.FC = () => {
   const CustomTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-black/90 backdrop-blur-2xl border border-white/10 p-3 rounded-2xl shadow-2xl text-[10px] text-white font-mono">
+        <div className="bg-black/90 backdrop-blur-2xl border border-white/10 p-3 rounded-2xl shadow-2xl text-[10px] text-white font-mono animate-swift-zoom">
           <p className="font-black opacity-40 mb-1 tracking-widest uppercase">{payload[0].name}</p>
           <p className="font-bold text-xs">{payload[0].value} Items</p>
         </div>
@@ -45,9 +45,9 @@ export const AnalyticsScreen: React.FC = () => {
   };
 
   return (
-    <div className="animate-enter pb-32 pt-4">
+    <div className="animate-swift-enter pb-32 pt-4">
       <div className="space-y-6">
-        <div className="apple-glass p-8 border-white/5">
+        <div className="apple-glass p-8 border-white/5 animate-swift-enter" style={{ animationDelay: '0.1s' }}>
           <div className="flex justify-between items-start mb-8">
             <div>
               <div className="text-[10px] font-black text-white/30 uppercase tracking-widest font-mono mb-1">Insights</div>
@@ -71,6 +71,9 @@ export const AnalyticsScreen: React.FC = () => {
                   paddingAngle={12} 
                   dataKey="value"
                   stroke="none"
+                  animationBegin={200}
+                  animationDuration={1500}
+                  animationEasing="ease-out"
                 >
                   {statusData.map((entry, index) => <Cell key={`cell-${index}`} fill={entry.color} />)}
                 </Pie>
@@ -78,15 +81,15 @@ export const AnalyticsScreen: React.FC = () => {
               </PieChart>
             </ResponsiveContainer>
             
-            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none animate-swift-zoom" style={{ animationDelay: '0.8s' }}>
               <span className="text-3xl font-black text-white italic">{Math.round((doneCount / total) * 100)}%</span>
               <span className="text-[8px] text-white/20 uppercase tracking-widest font-mono">Completion</span>
             </div>
           </div>
 
           <div className="flex justify-between px-4 mt-8">
-            {statusData.map(d => (
-              <div key={d.name} className="flex flex-col items-center">
+            {statusData.map((d, i) => (
+              <div key={d.name} className="flex flex-col items-center animate-swift-enter" style={{ animationDelay: `${0.3 + i * 0.1}s` }}>
                 <div className="flex items-center gap-2 text-[9px] font-black uppercase text-white/20 mb-1">
                   <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: d.color }} />
                   {d.name}
@@ -97,7 +100,7 @@ export const AnalyticsScreen: React.FC = () => {
           </div>
         </div>
 
-        <div className="apple-glass p-8 border-white/5">
+        <div className="apple-glass p-8 border-white/5 animate-swift-enter" style={{ animationDelay: '0.2s' }}>
           <div className="text-[10px] font-black text-white/30 uppercase tracking-widest font-mono mb-6">Load Distribution</div>
           <div className="h-[180px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -116,7 +119,10 @@ export const AnalyticsScreen: React.FC = () => {
                   dataKey="minutes" 
                   fill={THEME_COLORS.iris} 
                   radius={[8, 8, 8, 8]}
-                  className="transition-all duration-500"
+                  className="transition-all duration-700"
+                  animationBegin={400}
+                  animationDuration={1500}
+                  animationEasing="ease-out"
                 />
               </BarChart>
             </ResponsiveContainer>

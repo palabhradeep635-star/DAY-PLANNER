@@ -243,14 +243,14 @@ const AppContent = () => {
     return (
       <button 
         onClick={onClick} 
-        className="flex flex-col items-center justify-center relative z-20 group outline-none h-full w-full"
+        className="flex flex-col items-center justify-center relative z-20 group outline-none h-full w-full swift-transition"
       >
-        <div className={`p-1.5 sm:p-2.5 rounded-2xl transition-all duration-500 relative ${
+        <div className={`p-1.5 sm:p-2.5 rounded-2xl transition-all duration-700 relative ${
           active ? 'text-white scale-110 translate-y-[-2px]' : 'text-white/20 hover:text-white/40'
         }`}>
-          <Icon size={20} className={`sm:w-[22px] sm:h-[22px] transition-all duration-500 ${active ? 'theme-text drop-shadow-[0_0_12px_var(--theme-primary-glow)]' : ''}`} strokeWidth={active ? 2.5 : 2} />
+          <Icon size={20} className={`sm:w-[22px] sm:h-[22px] transition-all duration-700 ${active ? 'theme-text drop-shadow-[0_0_12px_var(--theme-primary-glow)]' : ''}`} strokeWidth={active ? 2.5 : 2} />
         </div>
-        <div className={`text-[6px] sm:text-[7px] font-bold uppercase tracking-[0.3em] font-outfit transition-all duration-500 ${
+        <div className={`text-[6px] sm:text-[7px] font-bold uppercase tracking-[0.3em] font-outfit transition-all duration-700 ${
           active ? 'opacity-100 max-h-4 translate-y-0 mt-1 text-white' : 'opacity-0 max-h-0 -translate-y-2'
         }`}>
           {label}
@@ -280,7 +280,7 @@ const AppContent = () => {
                {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}
              </span>
           </div>
-          <button onClick={() => setShowSettings(true)} className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl sm:rounded-[18px] apple-glass flex items-center justify-center active:scale-90 shadow-3xl transition-all overflow-hidden border border-white/10">
+          <button onClick={() => setShowSettings(true)} className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl sm:rounded-[18px] apple-glass flex items-center justify-center swift-press swift-hover shadow-3xl transition-all overflow-hidden border border-white/10">
             {user?.avatar ? <img src={user.avatar} className="w-full h-full object-cover" /> : <SettingsIcon size={18} className="text-white/30 sm:w-[20px] sm:h-[20px]" />}
           </button>
         </div>
@@ -288,8 +288,8 @@ const AppContent = () => {
       
       <div className="relative z-10 flex-1 overflow-y-auto no-scrollbar px-4 sm:px-8 lg:px-14">
         <div className="max-w-4xl mx-auto pb-64">
-          {currentScreen === 'analytics' ? <AnalyticsScreen /> : (
-            <div className="animate-enter">
+          {currentScreen === 'analytics' ? <div className="animate-swift-zoom"><AnalyticsScreen /></div> : (
+            <div className="animate-swift-enter">
               <FluidGreeting 
                 primary={currentScreen === 'upcoming' ? "NEURAL_VECTORS" : neuralGreeting.p} 
                 secondary={currentScreen === 'upcoming' ? "UPCOMING_DIRECTIVES" : neuralGreeting.s} 
@@ -299,7 +299,7 @@ const AppContent = () => {
               
               {currentScreen === 'today' ? (
                 <>
-                  <div className={`apple-glass p-6 sm:p-10 lg:p-14 mb-10 sm:mb-14 flex flex-col sm:flex-row items-center justify-between group shadow-[0_40px_100px_rgba(0,0,0,0.6)] active:scale-[0.99] transition-all duration-700 relative overflow-hidden ${isAnyTimerRunning ? 'border-[var(--theme-primary)]/40 ring-4 sm:ring-8 ring-[var(--theme-primary)]/5' : 'border-white/5'}`}>
+                  <div className={`apple-glass p-6 sm:p-10 lg:p-14 mb-10 sm:mb-14 flex flex-col sm:flex-row items-center justify-between group shadow-[0_40px_100px_rgba(0,0,0,0.6)] swift-press transition-all duration-700 relative overflow-hidden ${isAnyTimerRunning ? 'border-[var(--theme-primary)]/40 ring-4 sm:ring-8 ring-[var(--theme-primary)]/5' : 'border-white/5'}`}>
                     <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
                     <div className="absolute left-0 bottom-0 h-1 sm:h-2 theme-gradient-bg transition-all duration-1000 ease-out shadow-[0_0_30px_var(--theme-primary-glow)]" style={{ width: `${completionPct}%` }} />
                     
@@ -324,7 +324,7 @@ const AppContent = () => {
                            <div className="text-lg font-black text-white italic tracking-tight">{tasksDoneCount} / {todayTasks.length}</div>
                            <div className="text-[9px] font-bold text-white/30 uppercase tracking-[0.3em] font-mono">Synchronized_Units</div>
                         </div>
-                        <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center relative overflow-hidden group-hover:border-white/20 transition-all">
+                        <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center relative overflow-hidden group-hover:border-white/20 transition-all duration-500">
                            <Activity size={28} className={isAnyTimerRunning ? "theme-text animate-pulse sm:w-[32px] sm:h-[32px]" : "text-white/10 sm:w-[32px] sm:h-[32px]"} />
                            <div className="absolute inset-0 theme-gradient-bg opacity-0 group-hover:opacity-5 transition-opacity" />
                         </div>
@@ -358,7 +358,7 @@ const AppContent = () => {
                             </div>
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                               {activeTasks.map((task, i) => (
-                                <div key={task.id} className="animate-enter" style={{ animationDelay: `${i * 0.08}s` }}>
+                                <div key={task.id} className="animate-swift-enter" style={{ animationDelay: `${i * 0.1}s` }}>
                                   <TaskCard task={task} onEdit={(t) => setEditingTask(t)} />
                                 </div>
                               ))}
@@ -376,7 +376,7 @@ const AppContent = () => {
                             </div>
                             <div className="grid grid-cols-1 gap-4 sm:gap-6">
                               {scheduledQueue.map((task, i) => (
-                                <div key={task.id} className="animate-enter" style={{ animationDelay: `${(activeTasks.length + i) * 0.08}s` }}>
+                                <div key={task.id} className="animate-swift-enter" style={{ animationDelay: `${(activeTasks.length + i) * 0.1}s` }}>
                                   <TaskCard 
                                     task={task} 
                                     onEdit={(t) => setEditingTask(t)} 
@@ -390,7 +390,7 @@ const AppContent = () => {
                         )}
                         
                         {todayTasks.length === tasksDoneCount && todayTasks.length > 0 && (
-                           <div className="py-20 sm:py-24 flex flex-col items-center text-center animate-enter">
+                           <div className="py-20 sm:py-24 flex flex-col items-center text-center animate-swift-enter">
                               <div className="w-16 sm:w-20 h-16 sm:h-20 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 mb-6 sm:mb-8 shadow-3xl">
                                 <Check size={32} strokeWidth={3} className="sm:w-[40px] sm:h-[40px]" />
                               </div>
@@ -408,7 +408,7 @@ const AppContent = () => {
                   </div>
                 </>
               ) : currentScreen === 'upcoming' ? (
-                <div className="space-y-8 sm:space-y-12 animate-enter">
+                <div className="space-y-8 sm:space-y-12">
                    <div className="flex flex-col sm:flex-row items-center justify-between mb-4 sm:mb-8 gap-6 sm:gap-0">
                       <div className="flex items-center gap-4">
                         <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-xl sm:rounded-2xl bg-white/5 flex items-center justify-center shadow-lg border border-white/10">
@@ -421,7 +421,7 @@ const AppContent = () => {
                       </div>
                       <button 
                         onClick={() => setShowAIModal(true)}
-                        className="w-full sm:w-auto px-6 py-3 rounded-xl sm:rounded-2xl theme-gradient-bg text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl active:scale-95 transition-all"
+                        className="w-full sm:w-auto px-6 py-3 rounded-xl sm:rounded-2xl theme-gradient-bg text-white text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-3 shadow-xl swift-hover active:scale-95 transition-all"
                       >
                          <Sparkles size={14} />
                          <span>Neural Projection</span>
@@ -430,15 +430,15 @@ const AppContent = () => {
 
                    {Object.entries(groupedUpcomingTasks).length > 0 ? (
                       (Object.entries(groupedUpcomingTasks) as [string, Task[]][]).sort().map(([day, dayTasks], idx) => (
-                        <div key={day} className="animate-enter" style={{ animationDelay: `${idx * 0.1}s` }}>
+                        <div key={day} className="animate-swift-enter" style={{ animationDelay: `${idx * 0.1}s` }}>
                            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                               <div className="h-px flex-1 bg-gradient-to-r from-transparent to-white/10" />
                               <div className="px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-white/5 border border-white/10 text-[8px] sm:text-[9px] font-black theme-text uppercase tracking-[0.3em] sm:tracking-[0.4em] font-mono italic">Cycle_{day}</div>
                               <div className="h-px flex-1 bg-gradient-to-l from-transparent to-white/10" />
                            </div>
                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                             {dayTasks.map((task) => (
-                               <div key={task.id} className="relative group">
+                             {dayTasks.map((task, taskIdx) => (
+                               <div key={task.id} className="relative group animate-swift-enter" style={{ animationDelay: `${taskIdx * 0.08}s` }}>
                                   <TaskCard task={task} onEdit={(t) => setEditingTask(t)} />
                                   <button 
                                     onClick={(e) => { e.stopPropagation(); handlePromoteTask(task.id); }}
@@ -460,7 +460,7 @@ const AppContent = () => {
                    )}
                 </div>
               ) : (
-                <div className="space-y-6 sm:space-y-8 animate-enter">
+                <div className="space-y-6 sm:space-y-8">
                   <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-4">
                     <h3 className="text-[10px] sm:text-xs font-black text-white/40 uppercase tracking-[0.4em] sm:tracking-[0.5em] font-mono italic text-center sm:text-left">Sector_Archive</h3>
                     <div className="flex flex-wrap items-center justify-center gap-3">
@@ -471,7 +471,7 @@ const AppContent = () => {
                         </div>
                       )}
                       {errorStatus && (
-                        <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-red-500/10 border border-red-500/20 animate-enter">
+                        <div className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl bg-red-500/10 border border-red-500/20 animate-swift-enter">
                            <AlertTriangle size={12} className="text-red-500" />
                            <span className="text-[8px] sm:text-[9px] font-black text-red-500 uppercase tracking-widest font-mono">{errorStatus}</span>
                         </div>
@@ -479,7 +479,7 @@ const AppContent = () => {
                       <button 
                         onClick={() => handleNeuralPartition(false)}
                         disabled={partitioning || tasks.length === 0}
-                        className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl apple-glass text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 sm:gap-3 transition-all active:scale-95 disabled:opacity-30 border shadow-lg relative overflow-hidden ${errorStatus ? 'border-red-500/50 text-red-500' : 'border-[var(--theme-primary)]/20 theme-text hover:bg-white/10'}`}
+                        className={`px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl apple-glass text-[9px] sm:text-[10px] font-black uppercase tracking-widest flex items-center gap-2 sm:gap-3 transition-all swift-hover active:scale-95 disabled:opacity-30 border shadow-lg relative overflow-hidden ${errorStatus ? 'border-red-500/50 text-red-500' : 'border-[var(--theme-primary)]/20 theme-text hover:bg-white/10'}`}
                       >
                         {partitioning && !isAutoSyncing ? (
                           <>
@@ -488,7 +488,7 @@ const AppContent = () => {
                           </>
                         ) : (
                           <>
-                            <Sparkles size={12} className="sm:w-[14px] sm:h-[14px]" />
+                            <Sparkles size={12} className="sm:w-[14px] chromium:text-[var(--theme-primary)] sm:h-[14px]" />
                             <span>Re-Sync Context</span>
                           </>
                         )}
@@ -502,8 +502,8 @@ const AppContent = () => {
                       const progressInTopic = Math.round((doneInTopic / topicTasks.length) * 100);
                       
                       return (
-                        <div key={topic} className="animate-enter" style={{ animationDelay: `${groupIdx * 0.1}s` }}>
-                          <div className="apple-glass p-6 sm:p-10 group mb-6 sm:mb-8 relative overflow-hidden border border-white/5 shadow-4xl transition-all hover:border-white/10">
+                        <div key={topic} className="animate-swift-enter" style={{ animationDelay: `${groupIdx * 0.1}s` }}>
+                          <div className="apple-glass p-6 sm:p-10 group mb-6 sm:mb-8 relative overflow-hidden border border-white/5 shadow-4xl transition-all hover:border-white/10 duration-700">
                              <div className="flex flex-col sm:flex-row items-start justify-between mb-8 sm:mb-12 relative gap-6 sm:gap-0">
                                 <div className="flex items-center gap-4 sm:gap-6 w-full sm:w-auto">
                                    <div className={`w-12 sm:w-14 h-12 sm:h-14 rounded-xl sm:rounded-2xl bg-white/5 flex items-center justify-center transition-all duration-700 group-hover:theme-gradient-bg group-hover:shadow-[0_0_20px_var(--theme-primary-glow)] shrink-0 border border-white/10`}>
@@ -523,7 +523,7 @@ const AppContent = () => {
                                           onChange={e => setTempTopicName(e.target.value)}
                                           onBlur={() => handleRenameSector(topic)}
                                           onKeyDown={e => e.key === 'Enter' && handleRenameSector(topic)}
-                                          className="bg-white/5 border border-white/20 rounded-lg px-2 sm:px-3 py-1 text-xl sm:text-2xl font-black text-white italic tracking-tight uppercase outline-none w-full"
+                                          className="bg-white/5 border border-white/20 rounded-lg px-2 sm:px-3 py-1 text-xl sm:text-2xl font-black text-white italic tracking-tight uppercase outline-none w-full swift-transition"
                                         />
                                       ) : (
                                         <div 
@@ -537,7 +537,7 @@ const AppContent = () => {
                                    </div>
                                 </div>
                                 <div className="w-full sm:w-auto text-right flex flex-col items-end">
-                                   <div className="text-3xl sm:text-4xl font-black italic text-white/10 group-hover:text-white/20 transition-all font-mono leading-none">{progressInTopic}%</div>
+                                   <div className="text-3xl sm:text-4xl font-black italic text-white/10 group-hover:text-white/20 transition-all font-mono leading-none duration-700">{progressInTopic}%</div>
                                    <div className="w-full sm:w-24 h-1 bg-white/5 rounded-full mt-2 sm:mt-3 overflow-hidden">
                                       <div className="h-full theme-gradient-bg transition-all duration-1000" style={{ width: `${progressInTopic}%` }} />
                                    </div>
@@ -546,7 +546,7 @@ const AppContent = () => {
                              
                              <div className="grid grid-cols-1 gap-3 sm:gap-4">
                                {topicTasks.map((task, i) => (
-                                 <div key={task.id} className="animate-enter" style={{ animationDelay: `${i * 0.05}s` }}>
+                                 <div key={task.id} className="animate-swift-enter" style={{ animationDelay: `${i * 0.05}s` }}>
                                    <TaskCard task={task} onEdit={(t) => setEditingTask(t)} />
                                  </div>
                                ))}
@@ -569,7 +569,7 @@ const AppContent = () => {
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 z-[100] px-4 sm:px-6 pb-6 sm:pb-12 flex justify-center pointer-events-none" style={{ paddingBottom: 'calc(1.5rem + var(--sab))' }}>
-        <div className="nav-island w-full max-w-xl p-1.5 sm:p-2 grid grid-cols-5 items-center pointer-events-auto relative h-16 sm:h-20 border border-white/10">
+        <div className="nav-island w-full max-w-xl p-1.5 sm:p-2 grid grid-cols-5 items-center pointer-events-auto relative h-16 sm:h-20 border border-white/10 shadow-4xl">
           
           <div 
             className="plasma-indicator h-12 sm:h-14 w-[20%]" 
@@ -584,12 +584,12 @@ const AppContent = () => {
           <div className="flex items-center justify-center relative z-20 group">
             <button 
               onClick={() => setShowCreationChoice(true)}
-              className="w-[56px] h-[56px] sm:w-[68px] sm:h-[68px] -mt-8 sm:-mt-10 rounded-full theme-gradient-bg text-white flex items-center justify-center shadow-[0_20px_40px_rgba(0,0,0,0.5),0_0_20px_var(--theme-primary-glow)] hover:scale-110 active:scale-95 transition-all border-[4px] sm:border-[6px] border-black/80 relative overflow-visible"
+              className="w-[56px] h-[56px] sm:w-[68px] sm:h-[68px] -mt-8 sm:-mt-10 rounded-full theme-gradient-bg text-white flex items-center justify-center shadow-[0_20px_40px_rgba(0,0,0,0.5),0_0_20px_var(--theme-primary-glow)] hover:scale-110 active:scale-95 transition-all duration-500 border-[4px] sm:border-[6px] border-black/80 relative overflow-visible"
             >
               <div className="ignite-inner-ring" />
               <div className="ignite-outer-ring" />
               <div className="ignite-pulse-glow" />
-              <Plus size={24} strokeWidth={3} className="sm:w-[30px] sm:h-[30px] group-hover:rotate-180 transition-all duration-700 relative z-10" />
+              <Plus size={24} strokeWidth={3} className="sm:w-[30px] sm:h-[30px] group-hover:rotate-180 transition-all duration-1000 relative z-10" />
             </button>
           </div>
 
