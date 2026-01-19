@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Check, Clock, Pause, ChevronRight, Activity, Zap, Cloud, Calendar, ArrowRight } from 'lucide-react';
 import { Task } from '../types';
 import { useApp } from '../context/AppContext';
@@ -12,7 +12,7 @@ interface TaskCardProps {
 
 const COMPLEXITIES = ["O(1)", "O(log n)", "O(n)", "O(n log n)", "O(n²)", "O(2ⁿ)"];
 
-export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, endTime }) => {
+export const TaskCard: React.FC<TaskCardProps> = memo(({ task, onEdit, startTime, endTime }) => {
   const { updateTask, toggleTaskTimer } = useApp();
 
   const toggleStatus = (e: React.MouseEvent) => {
@@ -36,18 +36,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
 
   const hash = task.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const complexity = COMPLEXITIES[hash % COMPLEXITIES.length];
-
   const isSynced = task.syncMetadata?.lastSyncedAt;
 
   return (
     <div 
       onClick={() => onEdit(task)}
-      className={`apple-glass p-4 sm:p-6 group relative swift-hover swift-press cursor-pointer border-white/5 shadow-lg transition-all ${
+      className={`apple-glass p-4 sm:p-6 group relative swift-hover swift-press cursor-pointer shadow-lg transition-all overflow-hidden ${
         task.status === 'Done' ? 'opacity-30 grayscale-[0.8]' : ''
       }`}
     >
+      {/* Bending Status Indicator */}
       {task.status === 'In progress' && (
-        <div className="absolute left-0 top-0 bottom-0 w-1 theme-gradient-bg shadow-[2px_0_15px_var(--theme-primary)] animate-pulse" />
+        <div className="active-bend-indicator animate-pulse" />
       )}
 
       <div className="flex items-center gap-3 sm:gap-6 relative z-10">
@@ -58,7 +58,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
             task.status === 'In progress' ? 'border-[var(--theme-primary)] bg-[var(--theme-primary)]/10 shadow-[0_0_15px_var(--theme-primary-glow)] scale-105' : 'border-white/10 bg-white/5 hover:border-white/20'
           }`}
         >
-          {task.status === 'Done' && <Check size={20} className="text-white stroke-[3px] sm:w-[22px] sm:h-[22px] animate-swift-zoom" />}
+          {task.status === 'Done' && <Check size={20} className="text-white stroke-[3px] sm:w-[22px] sm:h-[22px]" />}
           {task.status === 'In progress' && <Activity size={20} className="text-white animate-pulse sm:w-[22px] sm:h-[22px]" />}
           {task.status === 'Not started' && <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors duration-500" />}
         </button>
@@ -66,43 +66,42 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
         <div className="flex-1 min-w-0">
           <div className="flex items-center flex-wrap gap-1.5 sm:gap-2.5 mb-1.5 sm:mb-2">
             <span className="text-[8px] sm:text-[9px] font-black text-white/30 font-mono tracking-widest uppercase truncate">{task.code}</span>
-            <div className={`px-1.5 sm:px-2 py-0.5 rounded-lg border text-[7px] sm:text-[8px] font-black uppercase tracking-widest transition-colors duration-700 ${getPriorityStyles(task.priority)}`}>
+            <div className={`px-1.5 sm:px-2 py-0.5 rounded-lg border text-[7px] sm:text-[8px] font-black uppercase tracking-widest ${getPriorityStyles(task.priority)}`}>
                {task.priority}
             </div>
             
             {startTime && endTime && task.status !== 'Done' && (
-              <div className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[7px] sm:text-[8px] font-black text-white/40 font-mono tracking-tight uppercase animate-swift-enter">
-                <Calendar size={8} className="theme-text sm:w-[10px] sm:h-[10px]" />
-                <span className="hidden xs:inline flex items-center gap-1">
+              <div className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-2 py-0.5 rounded-lg bg-white/5 border border-white/10 text-[7px] sm:text-[8px] font-black text-white/40 font-mono tracking-tight uppercase">
+                <Calendar size={8} className="theme-text" />
+                <span className="flex items-center gap-1">
                   {startTime} <ArrowRight size={8} className="theme-text" /> {endTime}
                 </span>
-                <span className="xs:hidden">{startTime}</span>
               </div>
             )}
 
             {isSynced && (
-              <div className="flex items-center gap-1 ml-1 opacity-40 animate-swift-zoom">
-                <Cloud size={9} className="theme-text sm:w-[10px] sm:h-[10px]" />
+              <div className="flex items-center gap-1 ml-1 opacity-40">
+                <Cloud size={9} className="theme-text" />
                 <span className="text-[6px] sm:text-[7px] font-black text-white/60 uppercase font-mono italic">SYNC</span>
               </div>
             )}
             {task.timerRunning && (
               <div className="flex items-center gap-1 ml-auto">
-                 <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-rose-500 animate-pulse shadow-[0_0_8px_rgba(244,63,94,0.6)]" />
-                 <span className="text-[7px] sm:text-[8px] font-black text-rose-500 uppercase tracking-[0.1em] sm:tracking-[0.2em] font-mono whitespace-nowrap">LIVE</span>
+                 <div className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                 <span className="text-[7px] sm:text-[8px] font-black text-rose-500 uppercase tracking-widest font-mono whitespace-nowrap">LIVE</span>
               </div>
             )}
           </div>
 
-          <h3 className={`font-black text-base sm:text-xl leading-tight transition-all duration-700 mb-1.5 sm:mb-2.5 italic truncate tracking-tight ${
-            task.status === 'Done' ? 'line-through text-white/20 translate-x-1' : 'text-white translate-x-0'
+          <h3 className={`font-black text-base sm:text-xl leading-tight mb-1.5 sm:mb-2.5 italic truncate tracking-tight transition-all duration-700 ${
+            task.status === 'Done' ? 'line-through text-white/20' : 'text-white'
           }`}>
             {task.title}
           </h3>
 
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-white/20 text-[8px] sm:text-[9px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] font-mono">
-            <span className="flex items-center gap-1 sm:gap-1.5"><Zap size={10} className="theme-text sm:w-[11px] sm:h-[11px]" /> {task.type}</span>
-            <span className="flex items-center gap-1 sm:gap-1.5"><Clock size={10} className="sm:w-[11px] sm:h-[11px]" /> {Math.floor(task.actualMinutes)}M / {task.estimateMinutes}M</span>
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-white/20 text-[8px] sm:text-[9px] font-black uppercase tracking-[0.2em] font-mono">
+            <span className="flex items-center gap-1 sm:gap-1.5"><Zap size={10} className="theme-text" /> {task.type}</span>
+            <span className="flex items-center gap-1 sm:gap-1.5"><Clock size={10} /> {Math.floor(task.actualMinutes)}M / {task.estimateMinutes}M</span>
             <span className="hidden sm:inline opacity-30">| {complexity}</span>
           </div>
         </div>
@@ -111,13 +110,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onEdit, startTime, end
           onClick={handleTimer}
           className={`w-9 h-9 sm:w-13 sm:h-13 rounded-xl sm:rounded-[18px] flex items-center justify-center transition-all duration-700 border shrink-0 swift-press ${
             task.timerRunning 
-              ? 'bg-[var(--theme-primary)] text-white border-transparent shadow-[0_0_20px_var(--theme-primary-glow)] scale-110' 
-              : 'bg-white/5 text-white/10 hover:text-white/40 border-white/5 hover:border-white/10'
+              ? 'theme-gradient-bg text-white border-transparent shadow-[0_0_20px_var(--theme-primary-glow)] scale-110' 
+              : 'bg-white/5 text-white/10 hover:text-white/40 border-white/5'
           }`}
         >
-          {task.timerRunning ? <Pause size={16} fill="currentColor" className="sm:w-[18px] sm:h-[18px] animate-swift-zoom" /> : <ChevronRight size={18} className="group-hover:translate-x-1.5 transition-all duration-500 sm:w-[20px] sm:h-[20px]" />}
+          {task.timerRunning ? <Pause size={16} fill="currentColor" /> : <ChevronRight size={18} className="group-hover:translate-x-1.5 transition-all duration-500" />}
         </button>
       </div>
     </div>
   );
-};
+});
