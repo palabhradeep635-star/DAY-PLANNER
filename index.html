@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>APEX</title>
-   
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
@@ -137,7 +137,7 @@
       .fluid-h1 {
         font-family: 'Outfit', sans-serif;
         font-weight: 900;
-        font-size: clamp(1.8rem, 8vw, 4.2rem);
+        font-size: clamp(1.6rem, 7.5vw, 4rem);
         line-height: 1.05;
         letter-spacing: -0.04em;
         text-transform: uppercase;
@@ -149,7 +149,7 @@
         will-change: transform, opacity;
         filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
         word-break: break-word;
-        padding-right: 0.2em; /* Extra space for italics */
+        padding-right: 0.4em; /* Increased padding to prevent italicized 'S' clipping */
       }
 
       .apple-glass {
@@ -186,7 +186,10 @@
     "react": "https://esm.sh/react@^19.2.3",
     "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
     "recharts": "https://esm.sh/recharts@^3.6.0",
-    "lucide-react": "https://esm.sh/lucide-react@^0.562.0"
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "path": "https://esm.sh/path@^0.12.7",
+    "express": "https://esm.sh/express@^5.2.1",
+    "url": "https://esm.sh/url@^0.11.4"
   }
 }
 </script>
